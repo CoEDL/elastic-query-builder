@@ -1,0 +1,15 @@
+{
+    "name": "elastic-builder",
+    "version": "0.0.1",
+    "description": "A library to help construct elastic search queries",
+    "main": "index.js",
+    "scripts": {
+        "tests": "./node_modules/.bin/jest --coverage",
+        "tests:watch": "./node_modules/.bin/jest --watch"
+    },
+    "author": "Marco La Rosa",
+    "license": "GPLV3",
+    "devDependencies": {
+        "jest": "^27.0.5"
+    }
+}
