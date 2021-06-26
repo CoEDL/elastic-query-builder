@@ -1,4 +1,5 @@
 import { BoolQueryResponseInterface } from "./interfaces";
+import { flattenDeep } from "lodash";
 
 export class BoolQuery {
     private _must: any[];
@@ -12,20 +13,24 @@ export class BoolQuery {
         this._filter = [];
         this._mustNot = [];
     }
-    must(query: {}): this {
-        this._must.push(query);
+    must(query: {} | any[]): this {
+        let queries: any[] = flattenDeep([query]);
+        this._must = [...this._must, ...queries];
         return this;
     }
-    filter(query: {}): this {
-        this._filter.push(query);
+    filter(query: {} | any[]): this {
+        let queries: any[] = flattenDeep([query]);
+        this._filter = [...this._filter, ...queries];
         return this;
     }
-    should(query: {}): this {
-        this._should.push(query);
+    should(query: {} | any[]): this {
+        let queries: any[] = flattenDeep([query]);
+        this._should = [...this._should, ...queries];
         return this;
     }
-    mustNot(query: {}): this {
-        this._mustNot.push(query);
+    mustNot(query: {} | any[]): this {
+        let queries: any[] = flattenDeep([query]);
+        this._mustNot = [...this._mustNot, ...queries];
         return this;
     }
     toJSON(): BoolQueryResponseInterface {
@@ -34,13 +39,17 @@ export class BoolQuery {
         };
 
         const props = ["_must", "_should", "_filter", "_mustNot"] as const;
+
         for (let name of props) {
             if (this[name].length) {
-                let result = this[name].map((acc: {}, query: {}) => ({
+                const key = `${name.replace("_", "")}`;
+                let data = this[name].map((q) => {
+                    return q.toJSON ? q.toJSON() : q;
+                });
+                let result = data.map((acc: {}, query: {}) => ({
                     ...acc,
                     ...query,
                 }));
-                const key = `${name.replace("_", "")}`;
                 json.bool = { ...json.bool, [key]: result };
             }
         }
