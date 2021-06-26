@@ -5,10 +5,10 @@ export declare class BoolQuery {
     private _filter;
     private _mustNot;
     constructor();
-    must(query: {}): this;
-    filter(query: {}): this;
-    should(query: {}): this;
-    mustNot(query: {}): this;
+    must(query: {} | any[]): this;
+    filter(query: {} | any[]): this;
+    should(query: {} | any[]): this;
+    mustNot(query: {} | any[]): this;
     toJSON(): BoolQueryResponseInterface;
     toJson(): BoolQueryResponseInterface;
 }

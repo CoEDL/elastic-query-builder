@@ -10,8 +10,14 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
+var __spreadArray = (this && this.__spreadArray) || function (to, from) {
+    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
+        to[j] = from[i];
+    return to;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BoolQuery = void 0;
+var lodash_1 = require("lodash");
 var BoolQuery = /** @class */ (function () {
     function BoolQuery() {
         this._must = [];
@@ -20,19 +26,23 @@ var BoolQuery = /** @class */ (function () {
         this._mustNot = [];
     }
     BoolQuery.prototype.must = function (query) {
-        this._must.push(query);
+        var queries = lodash_1.flattenDeep([query]);
+        this._must = __spreadArray(__spreadArray([], this._must), queries);
         return this;
     };
     BoolQuery.prototype.filter = function (query) {
-        this._filter.push(query);
+        var queries = lodash_1.flattenDeep([query]);
+        this._filter = __spreadArray(__spreadArray([], this._filter), queries);
         return this;
     };
     BoolQuery.prototype.should = function (query) {
-        this._should.push(query);
+        var queries = lodash_1.flattenDeep([query]);
+        this._should = __spreadArray(__spreadArray([], this._should), queries);
         return this;
     };
     BoolQuery.prototype.mustNot = function (query) {
-        this._mustNot.push(query);
+        var queries = lodash_1.flattenDeep([query]);
+        this._mustNot = __spreadArray(__spreadArray([], this._mustNot), queries);
         return this;
     };
     BoolQuery.prototype.toJSON = function () {
@@ -44,8 +54,11 @@ var BoolQuery = /** @class */ (function () {
         for (var _i = 0, props_1 = props; _i < props_1.length; _i++) {
             var name = props_1[_i];
             if (this[name].length) {
-                var result = this[name].map(function (acc, query) { return (__assign(__assign({}, acc), query)); });
                 var key = "" + name.replace("_", "");
+                var data = this[name].map(function (q) {
+                    return q.toJSON ? q.toJSON() : q;
+                });
+                var result = data.map(function (acc, query) { return (__assign(__assign({}, acc), query)); });
                 json.bool = __assign(__assign({}, json.bool), (_a = {}, _a[key] = result, _a));
             }
         }

@@ -23,20 +23,12 @@ export async function execute({ service, index, query, }) {
     return { total, documents, aggregations };
 }
 export function termQuery({ path, field, value }) {
-    if (path) {
-        return {
-            term: {
-                [`${path}.${field}`]: value,
-            },
-        };
-    }
-    else {
-        return {
-            term: {
-                [field]: { value },
-            },
-        };
-    }
+    field = path ? `${path}.${field}` : field;
+    return {
+        term: {
+            [field]: { value },
+        },
+    };
 }
 export function matchQuery({ path, field, value, operator = "AND", }) {
     if (path) {

@@ -78,22 +78,14 @@ function execute(_a) {
 }
 exports.execute = execute;
 function termQuery(_a) {
-    var _b, _c;
+    var _b;
     var path = _a.path, field = _a.field, value = _a.value;
-    if (path) {
-        return {
-            term: (_b = {},
-                _b[path + "." + field] = value,
-                _b),
-        };
-    }
-    else {
-        return {
-            term: (_c = {},
-                _c[field] = { value: value },
-                _c),
-        };
-    }
+    field = path ? path + "." + field : field;
+    return {
+        term: (_b = {},
+            _b[field] = { value: value },
+            _b),
+    };
 }
 exports.termQuery = termQuery;
 function matchQuery(_a) {

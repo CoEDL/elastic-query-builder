@@ -18,10 +18,6 @@ export declare function termQuery({ path, field, value }: {
     value: string;
 }): {
     term: {
-        [x: string]: string;
-    };
-} | {
-    term: {
         [x: string]: {
             value: string;
         };
