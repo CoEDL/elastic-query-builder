@@ -1,12 +1,20 @@
 // "use strict";
 
 // const { uniqBy, isPlainObject, isString, isArray, compact, difference } = require("lodash");
-import { Headers } from 'headers-utils';
-const fetch = require('node-fetch')
+import { Headers } from "headers-utils";
+const fetch = require("node-fetch");
 
 export const defaultAggregationCount = 5;
 
-export async function execute({ service, index, query }: { service: string, index: string, query: {} }) {
+export async function execute({
+    service,
+    index,
+    query,
+}: {
+    service: string;
+    index: string;
+    query: {};
+}) {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
 
@@ -23,11 +31,30 @@ export async function execute({ service, index, query }: { service: string, inde
     response = await response.json();
     const total = response.hits.total.value;
     const aggregations = response.aggregations;
-    const documents =  response.hits.hits;
+    const documents = response.hits.hits;
     return { total, documents, aggregations };
 }
 
-export function matchQuery({ path, field, value, operator = "AND" } : { path: string, field: string, value: string, operator: string}) {
+export function termQuery({ path, field, value }: { path?: string; field: string; value: string }) {
+    field = path ? `${path}.${field}` : field;
+    return {
+        term: {
+            [field]: { value },
+        },
+    };
+}
+
+export function matchQuery({
+    path,
+    field,
+    value,
+    operator = "AND",
+}: {
+    path?: string;
+    field: string;
+    value: string;
+    operator: string;
+}) {
     if (path) {
         return {
             match: {
@@ -44,7 +71,15 @@ export function matchQuery({ path, field, value, operator = "AND" } : { path: st
     }
 }
 
-export function matchPhraseQuery({ path, field, value } : { path: string, field: string, value: string }) {
+export function matchPhraseQuery({
+    path,
+    field,
+    value,
+}: {
+    path?: string;
+    field: string;
+    value: string;
+}) {
     if (path) {
         return {
             match_phrase: {
@@ -60,7 +95,57 @@ export function matchPhraseQuery({ path, field, value } : { path: string, field:
     }
 }
 
-export function simpleAggregation({ path, field, size = 10 } : { path: string, field: string, size: number }) {
+export function wildcardQuery({
+    path,
+    field,
+    value,
+}: {
+    path?: string;
+    field: string;
+    value: string;
+}) {
+    if (path) {
+        return {
+            wildcard: { [`${path}.${field}`]: value },
+        };
+    } else {
+        return { wildcard: { [field]: value } };
+    }
+}
+
+export function rangeQuery({
+    path,
+    field,
+    value,
+}: {
+    path?: string;
+    field: string;
+    value: number[];
+}) {
+    if (path) {
+        return {
+            range: {
+                [`${path}.${field}`]: { gte: value[0], lte: value[1] },
+            },
+        };
+    } else {
+        return {
+            range: {
+                [field]: { gte: value[0], lte: value[1] },
+            },
+        };
+    }
+}
+
+export function simpleAggregation({
+    path,
+    field,
+    size = 10,
+}: {
+    path?: string | any;
+    field: string;
+    size: number;
+}) {
     return {
         [path]: {
             terms: { field: `${path}.${field}`, size },
@@ -69,7 +154,15 @@ export function simpleAggregation({ path, field, size = 10 } : { path: string, f
     };
 }
 
-export function nestedAggregation({ path, field, size = 10 } : { path: string, field: string, size: number }) {
+export function nestedAggregation({
+    path,
+    field,
+    size = 10,
+}: {
+    path?: string | any;
+    field: string;
+    size: number;
+}) {
     return {
         size: 0,
         aggs: {
@@ -92,33 +185,6 @@ export function nestedAggregation({ path, field, size = 10 } : { path: string, f
         },
     };
 }
-
-export function wildcardQuery({ path, field, value }: { path: string, field: string, value: string}) {
-    if (path) {
-        return {
-            wildcard: { [`${path}.${field}`]: value },
-        };
-    } else {
-        return { wildcard: { [field]: value } };
-    }
-}
-
-export function rangeQuery({ path, field, value }: { path: string, field: string, value: number[] }) {
-    if (path) {
-        return {
-            range: {
-                [`${path}.${field}`]: { gte: value[0], lte: value[1] },
-            },
-        };
-    } else {
-        return {
-            range: {
-                [field]: { gte: value[0], lte: value[1] },
-            },
-        };
-    }
-}
-
 
 // export class SearchService {
 //     constructor({ store }) {
@@ -847,7 +913,6 @@ export function rangeQuery({ path, field, value }: { path: string, field: string
 // //     };
 // // }
 
-
 // let agg = {
 //     size: 0,
 //     query: matchQuery({ path: "@type", field: "keyword", value: "Person" }),
@@ -856,5 +921,3 @@ export function rangeQuery({ path, field, value }: { path: string, field: string
 //         field: "keyword",
 //     }),
 // };
-
-
