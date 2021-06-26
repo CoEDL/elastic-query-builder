@@ -1,0 +1,20 @@
+[
+    {
+        "type": "person",
+        "name": "entry a",
+        "description": "entry a description",
+        "author": [
+            { "name": "person a", "email": "persona@email.com" },
+            { "name": "person b", "email": "personb@email.com" }
+        ]
+    },
+    {
+        "type": "person",
+        "name": "entry b",
+        "description": "entry b description",
+        "author": [
+            { "name": "person c", "email": "personc@email.com" },
+            { "name": "person d", "email": "persond@email.com" }
+        ]
+    }
+]
