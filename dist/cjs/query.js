@@ -39,6 +39,9 @@ var Query = /** @class */ (function () {
     Query.prototype.toJSON = function () {
         var json = __assign({}, lodash_1.cloneDeep(this._body));
         if (this._queries.length) {
+            var queries = this._queries.map(function (q) {
+                return q.toJSON ? q.toJSON : q;
+            });
             json.query = this._queries.reduce(function (acc, query) { return (__assign(__assign({}, acc), query)); });
         }
         return json;

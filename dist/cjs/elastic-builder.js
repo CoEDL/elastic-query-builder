@@ -40,7 +40,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.nestedAggregation = exports.simpleAggregation = exports.rangeQuery = exports.wildcardQuery = exports.matchPhraseQuery = exports.matchQuery = exports.termQuery = exports.execute = exports.defaultAggregationCount = void 0;
 // const { uniqBy, isPlainObject, isString, isArray, compact, difference } = require("lodash");
 var headers_utils_1 = require("headers-utils");
-var fetch = require('node-fetch');
+var fetch = require("node-fetch");
 exports.defaultAggregationCount = 5;
 function execute(_a) {
     var service = _a.service, index = _a.index, query = _a.query;
@@ -78,15 +78,20 @@ function execute(_a) {
 }
 exports.execute = execute;
 function termQuery(_a) {
-    var _b;
+    var _b, _c;
     var path = _a.path, field = _a.field, value = _a.value;
     if (path) {
+        return {
+            term: (_b = {},
+                _b[path + "." + field] = value,
+                _b),
+        };
     }
     else {
         return {
-            term: (_b = {},
-                _b[field] = { value: value },
-                _b)
+            term: (_c = {},
+                _c[field] = { value: value },
+                _c),
         };
     }
 }

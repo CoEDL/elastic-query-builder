@@ -1,5 +1,5 @@
 export declare const defaultAggregationCount = 5;
-export declare function execute({ service, index, query }: {
+export declare function execute({ service, index, query, }: {
     service: string;
     index: string;
     query: {};
@@ -18,12 +18,16 @@ export declare function termQuery({ path, field, value }: {
     value: string;
 }): {
     term: {
+        [x: string]: string;
+    };
+} | {
+    term: {
         [x: string]: {
             value: string;
         };
     };
-} | undefined;
-export declare function matchQuery({ path, field, value, operator }: {
+};
+export declare function matchQuery({ path, field, value, operator, }: {
     path?: string;
     field: string;
     value: string;
@@ -36,7 +40,7 @@ export declare function matchQuery({ path, field, value, operator }: {
         };
     };
 };
-export declare function matchPhraseQuery({ path, field, value }: {
+export declare function matchPhraseQuery({ path, field, value, }: {
     path?: string;
     field: string;
     value: string;
@@ -51,7 +55,7 @@ export declare function matchPhraseQuery({ path, field, value }: {
         [x: string]: string;
     };
 };
-export declare function wildcardQuery({ path, field, value }: {
+export declare function wildcardQuery({ path, field, value, }: {
     path?: string;
     field: string;
     value: string;
@@ -60,7 +64,7 @@ export declare function wildcardQuery({ path, field, value }: {
         [x: string]: string;
     };
 };
-export declare function rangeQuery({ path, field, value }: {
+export declare function rangeQuery({ path, field, value, }: {
     path?: string;
     field: string;
     value: number[];
@@ -72,7 +76,7 @@ export declare function rangeQuery({ path, field, value }: {
         };
     };
 };
-export declare function simpleAggregation({ path, field, size }: {
+export declare function simpleAggregation({ path, field, size, }: {
     path?: string | any;
     field: string;
     size: number;
@@ -96,7 +100,7 @@ export declare function simpleAggregation({ path, field, size }: {
         };
     };
 };
-export declare function nestedAggregation({ path, field, size }: {
+export declare function nestedAggregation({ path, field, size, }: {
     path?: string | any;
     field: string;
     size: number;

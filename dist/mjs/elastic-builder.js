@@ -1,9 +1,9 @@
 // "use strict";
 // const { uniqBy, isPlainObject, isString, isArray, compact, difference } = require("lodash");
-import { Headers } from 'headers-utils';
-const fetch = require('node-fetch');
+import { Headers } from "headers-utils";
+const fetch = require("node-fetch");
 export const defaultAggregationCount = 5;
-export async function execute({ service, index, query }) {
+export async function execute({ service, index, query, }) {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
     index = index ? `${service}/${index}/_search` : `${service}/${index}`;
@@ -24,16 +24,21 @@ export async function execute({ service, index, query }) {
 }
 export function termQuery({ path, field, value }) {
     if (path) {
+        return {
+            term: {
+                [`${path}.${field}`]: value,
+            },
+        };
     }
     else {
         return {
             term: {
-                [field]: { value }
-            }
+                [field]: { value },
+            },
         };
     }
 }
-export function matchQuery({ path, field, value, operator = "AND" }) {
+export function matchQuery({ path, field, value, operator = "AND", }) {
     if (path) {
         return {
             match: {
@@ -50,7 +55,7 @@ export function matchQuery({ path, field, value, operator = "AND" }) {
         };
     }
 }
-export function matchPhraseQuery({ path, field, value }) {
+export function matchPhraseQuery({ path, field, value, }) {
     if (path) {
         return {
             match_phrase: {
@@ -66,7 +71,7 @@ export function matchPhraseQuery({ path, field, value }) {
         };
     }
 }
-export function wildcardQuery({ path, field, value }) {
+export function wildcardQuery({ path, field, value, }) {
     if (path) {
         return {
             wildcard: { [`${path}.${field}`]: value },
@@ -76,7 +81,7 @@ export function wildcardQuery({ path, field, value }) {
         return { wildcard: { [field]: value } };
     }
 }
-export function rangeQuery({ path, field, value }) {
+export function rangeQuery({ path, field, value, }) {
     if (path) {
         return {
             range: {
@@ -92,7 +97,7 @@ export function rangeQuery({ path, field, value }) {
         };
     }
 }
-export function simpleAggregation({ path, field, size = 10 }) {
+export function simpleAggregation({ path, field, size = 10, }) {
     return {
         [path]: {
             terms: { field: `${path}.${field}`, size },
@@ -100,7 +105,7 @@ export function simpleAggregation({ path, field, size = 10 }) {
         [`${path}_count`]: { cardinality: { field: `${path}.${field}` } },
     };
 }
-export function nestedAggregation({ path, field, size = 10 }) {
+export function nestedAggregation({ path, field, size = 10, }) {
     return {
         size: 0,
         aggs: {
