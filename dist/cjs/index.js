@@ -12,3 +12,6 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./elastic-builder"), exports);
 __exportStar(require("./bool-query"), exports);
+__exportStar(require("./query"), exports);
+__exportStar(require("./bool-query"), exports);
+__exportStar(require("./interfaces"), exports);
