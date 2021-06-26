@@ -4,12 +4,36 @@
     "description": "A library to help construct elastic search queries",
     "main": "index.js",
     "scripts": {
+        "develop": "rm -fr dist/* && npm run build:cjs",
+        "build": "rm -fr dist/* && concurrently 'npm:build:cjs' 'npm:build:mjs'",
+        "build:cjs": "tsc -w -p tsconfig-es5.json",
+        "build:mjs": "tsc -w -p tsconfig-mjs.json",
         "tests": "./node_modules/.bin/jest --coverage",
         "tests:watch": "./node_modules/.bin/jest --watch"
     },
+    "engines": {
+        "node": ">=14"
+    },
+    "exports": {
+        ".": {
+            "import": "./dist/mjs/index.js",
+            "require": "./dist/cjs/index.js"
+        }
+    },
+    "engineStrict": true,
     "author": "Marco La Rosa",
     "license": "GPLV3",
     "devDependencies": {
-        "jest": "^27.0.5"
+        "concurrently": "^6.2.0",
+        "jest": "^27.0.5",
+        "typescript": "^4.3.4"
+    },
+    "dependencies": {
+        "@types/jest": "^26.0.23",
+        "@types/node": "^15.12.4",
+        "elastic-builder": "^2.16.0",
+        "headers-utils": "^3.0.2",
+        "lodash": "^4.17.21",
+        "node-fetch": "^2.6.1"
     }
 }
