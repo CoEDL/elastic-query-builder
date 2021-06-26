@@ -4,10 +4,10 @@
     "description": "A library to help construct elastic search queries",
     "main": "index.js",
     "scripts": {
-        "develop": "rm -fr dist/* && npm run build:cjs",
+        "develop": "rm -fr dist/* && tsc -w -p tsconfig-es5.json",
         "build": "rm -fr dist/* && concurrently 'npm:build:cjs' 'npm:build:mjs'",
-        "build:cjs": "tsc -w -p tsconfig-es5.json",
-        "build:mjs": "tsc -w -p tsconfig-mjs.json",
+        "build:cjs": "tsc -p tsconfig-es5.json",
+        "build:mjs": "tsc -p tsconfig-mjs.json",
         "tests": "./node_modules/.bin/jest --coverage",
         "tests:watch": "./node_modules/.bin/jest --watch"
     },
