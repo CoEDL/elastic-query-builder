@@ -1,4 +1,5 @@
-const { BoolQuery, matchPhraseQuery, matchQuery } = require("../dist/cjs");
+const { BoolQuery } = require("../dist/cjs");
+const { matchPhraseQuery, matchQuery } = require("../dist/cjs/queries");
 
 describe("Test query constructor capabilities", () => {
     test("it should be able instantiate a new boolean query with default options", () => {
