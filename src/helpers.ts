@@ -20,8 +20,7 @@ export async function execute({
         body: JSON.stringify(query),
     });
     if (response.status !== 200) {
-        console.log((await response.json()).error);
-        return {};
+        return response.json();
     }
     response = await response.json();
     const total = response.hits.total.value;
