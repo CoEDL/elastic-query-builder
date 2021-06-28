@@ -35,7 +35,7 @@ describe("Test search builder capabilities", () => {
         // match
         let query = new Query({});
         query.append(matchQuery({ field: "type", value: "person" }));
-        let result = await queryIndex({ index, query });
+        let result = await queryIndex({ index, query: query.toJSON() });
         expect(result.total).toBe(1);
 
         // no match
@@ -50,13 +50,13 @@ describe("Test search builder capabilities", () => {
         // match
         let query = new Query({});
         query.append(matchPhraseQuery({ field: "type", value: "person" }));
-        let result = await queryIndex({ index, query });
+        let result = await queryIndex({ index, query: query.toJSON() });
         expect(result.total).toBe(1);
 
         // no match
         query = new Query({});
         query.append(matchPhraseQuery({ field: "type", value: "dog" }));
-        result = await queryIndex({ index, query });
+        result = await queryIndex({ index, query: query.toJSON() });
         expect(result.total).toBe(0);
     });
     test("it should be able to run a simple term query ", async () => {
@@ -65,13 +65,13 @@ describe("Test search builder capabilities", () => {
         // match
         let query = new Query({});
         query.append(termQuery({ field: "type.keyword", value: "person" }));
-        let result = await queryIndex({ index, query });
+        let result = await queryIndex({ index, query: query.toJSON() });
         expect(result.total).toBe(1);
 
         // no match
         query = new Query({});
         query.append(termQuery({ field: "type.keyword", value: "dog" }));
-        result = await queryIndex({ index, query });
+        result = await queryIndex({ index, query: query.toJSON() });
         expect(result.total).toBe(0);
     });
     test("it should be able to run a simple range query ", async () => {
@@ -80,13 +80,13 @@ describe("Test search builder capabilities", () => {
         // match
         let query = new Query({});
         query.append(rangeQuery({ field: "age", value: [15, 25] }));
-        let result = await queryIndex({ index, query });
+        let result = await queryIndex({ index, query: query.toJSON() });
         expect(result.total).toBe(1);
 
         // no match
         query = new Query({});
         query.append(rangeQuery({ field: "age", value: [35, 45] }));
-        result = await queryIndex({ index, query });
+        result = await queryIndex({ index, query: query.toJSON() });
         expect(result.total).toBe(0);
     });
     test("it should be able to run a simple wildcard query ", async () => {
@@ -95,26 +95,26 @@ describe("Test search builder capabilities", () => {
         // match
         let query = new Query({});
         query.append(wildcardQuery({ field: "type", value: "per*" }));
-        let result = await queryIndex({ index, query });
+        let result = await queryIndex({ index, query: query.toJSON() });
         expect(result.total).toBe(1);
 
         // no match
         query = new Query({});
         query.append(wildcardQuery({ field: "type", value: "per?" }));
-        result = await queryIndex({ index, query });
+        result = await queryIndex({ index, query: query.toJSON() });
         expect(result.total).toBe(0);
     });
     test("it should be able to run a Bool query ", async () => {
         await load({ index, file: "test-data/single-document.json" });
         let query = new Query({});
 
-        let boolQuery = new BoolQuery();
-        boolQuery = boolQuery.must([
-            matchQuery({ field: "author.email.keyword", value: "persona@email.com" }),
-            matchPhraseQuery({ field: "type", value: "person" }),
-        ]);
-        query.append(boolQuery);
-        let result = await queryIndex({ index, query });
+        query.append(
+            new BoolQuery().must([
+                matchQuery({ field: "author.email.keyword", value: "persona@email.com" }),
+                matchPhraseQuery({ field: "type", value: "person" }),
+            ])
+        );
+        let result = await queryIndex({ index, query: query.toJSON() });
         expect(result.total).toBe(1);
     });
     test("it should be able to run a multi level Bool query ", async () => {
@@ -133,7 +133,7 @@ describe("Test search builder capabilities", () => {
                 ])
                 .should([])
         );
-        let result = await queryIndex({ index, query });
+        let result = await queryIndex({ index, query: query.toJSON() });
         expect(result.total).toBe(1);
     });
 });
