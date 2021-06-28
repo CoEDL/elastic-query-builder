@@ -39,12 +39,14 @@ export class Query {
         let json = {
             ...cloneDeep(this._body),
         };
+        json.query = {};
         if (this._queries.length) {
             let queries = this._queries.map((q) => {
                 return q.toJSON ? q.toJSON : q;
             });
-            json.query = this._queries.reduce((acc, query) => ({ ...acc, ...query }));
+            json.query = queries.reduce((acc, query) => ({ ...acc, ...query }));
         }
+
         return json;
     }
 
