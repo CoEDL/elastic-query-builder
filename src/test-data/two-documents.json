@@ -6,7 +6,8 @@
         "author": [
             { "name": "person a", "email": "persona@email.com" },
             { "name": "person b", "email": "personb@email.com" }
-        ]
+        ],
+        "age": 20
     },
     {
         "type": "person",
@@ -15,6 +16,7 @@
         "author": [
             { "name": "person c", "email": "personc@email.com" },
             { "name": "person d", "email": "persond@email.com" }
-        ]
+        ],
+        "age": 40
     }
 ]
