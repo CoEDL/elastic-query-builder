@@ -19,6 +19,14 @@
         ".": {
             "import": "./dist/mjs/index.js",
             "require": "./dist/cjs/index.js"
+        },
+        "./queries": {
+            "import": "./dist/mjs/queries/index.js",
+            "require": "./dist/cjs/queries/index.js"
+        },
+        "./aggregations": {
+            "import": "./dist/mjs/aggregations/index.js",
+            "require": "./dist/cjs/aggregations/index.js"
         }
     },
     "author": "Marco La Rosa",
