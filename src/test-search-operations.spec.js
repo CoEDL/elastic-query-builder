@@ -1,5 +1,7 @@
 const fetch = require("node-fetch");
-// const { Query, BoolQuery, termQuery, matchQuery, execute } = require("../dist/cjs");
+const { Query, BoolQuery } = require("../dist/cjs");
+const { termQuery, matchQuery, matchPhraseQuery } = require("../dist/cjs/queries");
+const { execute } = require("../dist/cjs/helpers");
 const path = require("path");
 const { readJSON } = require("fs-extra");
 const { isArray, isPlainObject } = require("lodash");
@@ -8,34 +10,69 @@ const { Client } = require("@elastic/elasticsearch");
 const elasticUrl = "http://localhost:9200";
 const index = "default";
 
-describe.skip("Test search builder capabailities", () => {
-    beforeAll(async () => {
+describe("Test search builder capabailities", () => {
+    beforeEach(async () => {
         await deleteIndex();
     });
-    test("it should be able to run a term query on a keyword field", async () => {
+    test("it should not be able to run an empty query", async () => {
+        let query = new Query({});
+        // console.log("query", JSON.stringify(query, null, 2));
+
+        let result = await queryIndex(query);
+        expect(result.error.reason).toMatch("query malformed");
+    });
+    test("it should be able to run a simple match query ", async () => {
         await load("test-data/single-document.json");
+        let query = new Query({});
+        query.append(matchQuery({ field: "type", value: "person" }));
+        let result = await queryIndex(query);
+        expect(result.total).toBe(1);
+    });
+    test("it should be able to run a simple match phrase query ", async () => {
+        await load("test-data/single-document.json");
+        let query = new Query({});
+        query.append(matchPhraseQuery({ field: "type", value: "person" }));
+        let result = await queryIndex(query);
+        expect(result.total).toBe(1);
+    });
+    test("it should be able to run a simple term query ", async () => {
+        await load("test-data/single-document.json");
+        let query = new Query({});
+        query.append(termQuery({ field: "type.keyword", value: "person" }));
+        let result = await queryIndex(query);
+        expect(result.total).toBe(1);
+    });
+    test("it should be able to run a boolean query ", async () => {
+        await load("test-data/single-document.json");
+        let query = new Query({});
 
         let boolQuery = new BoolQuery();
         boolQuery = boolQuery.must([
-            termQuery({ path: "author", field: "email.keyword", value: "persona@email.com" }),
-            termQuery({ field: "author.email.keyword", value: "persona@email.com" }),
-            termQuery({ field: "type.keyword", value: "person" }),
-            termQuery({ path: "type", field: "keyword", value: "person" }),
-            new BoolQuery().should(
-                termQuery({ path: "author", field: "email.keyword", value: "persona@email.com" })
-            ),
+            matchQuery({ field: "author.email.keyword", value: "persona@email.com" }),
+            matchPhraseQuery({ field: "type", value: "person" }),
         ]);
-        boolQuery = boolQuery.mustNot(
-            termQuery({ path: "type", field: "keyword", value: "person" })
-        );
-
-        let query = new Query({});
         query.append(boolQuery);
-
-        console.log(JSON.stringify(query.toJSON(), null, 2));
         let result = await queryIndex(query);
-        console.log(JSON.stringify(result, null, 2));
-        // expect(result.total).toBe(1);
+        expect(result.total).toBe(1);
+    });
+    test("it should be able to run a multi level boolean query ", async () => {
+        await load("test-data/single-document.json");
+        let query = new Query({});
+
+        query.append(
+            new BoolQuery()
+                .must([
+                    matchQuery({ field: "author.email.keyword", value: "persona@email.com" }),
+                    matchPhraseQuery({ field: "type", value: "person" }),
+                    new BoolQuery().should(
+                        matchQuery({ field: "author.email.keyword", value: "persona@email.com" }),
+                        matchQuery({ field: "author.email.keyword", value: "personb@email.com" })
+                    ),
+                ])
+                .should([])
+        );
+        let result = await queryIndex(query);
+        expect(result.total).toBe(1);
     });
 });
 
