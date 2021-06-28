@@ -1,2 +1,2 @@
-export * from "./nested-aggregation";
-export * from "./simple-aggregation";
+export * from "./bucket-aggregations/terms-aggregation";
+export * from "./metrics-aggregations/cardinality-aggregation";
