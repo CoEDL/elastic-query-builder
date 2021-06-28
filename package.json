@@ -1,5 +1,5 @@
 {
-    "name": "elastic-builder",
+    "name": "@coedl/elastic-query-builder",
     "version": "0.1.0",
     "description": "A library to help construct elastic search queries",
     "main": "index.js",
@@ -14,13 +14,13 @@
     "engines": {
         "node": ">=14"
     },
+    "engineStrict": true,
     "exports": {
         ".": {
             "import": "./dist/mjs/index.js",
             "require": "./dist/cjs/index.js"
         }
     },
-    "engineStrict": true,
     "author": "Marco La Rosa",
     "license": "GPLV3",
     "devDependencies": {
