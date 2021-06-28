@@ -72,10 +72,10 @@ To see how to create a whole set of queries look at `test-search-operations.spec
 ### Building a basic match query
 
 ```
-const { Query } = require("elastic-query-builder");
+const { Query } = require("@coedl/elastic-query-builder");
 const {
     matchQuery,
-} = require("elastic-query-builder/queries");
+} = require("@coedl/elastic-query-builder/queries");
 
 let query = new Query({});
 query.append(matchQuery({ field: "type", value: "person" }));
@@ -87,11 +87,11 @@ let result = await execute({ index, query });
 ### Building a simple Bool query
 
 ```
-const { Query, BoolQuery } = require("elastic-query-builder");
+const { Query, BoolQuery } = require("@coedl/elastic-query-builder");
 const {
     matchQuery,
     matchPhraseQuery
-} = require("elastic-query-builder/queries");
+} = require("@coedl/elastic-query-builder/queries");
 
 query.append(
     new BoolQuery()
@@ -108,11 +108,11 @@ let result = await execute({ index, query: query.toJSON() });
 ### Building a multiple level nested Bool query
 
 ```
-const { Query, BoolQuery } = require("elastic-query-builder");
+const { Query, BoolQuery } = require("@coedl/elastic-query-builder");
 const {
     matchQuery,
     matchPhraseQuery
-} = require("elastic-query-builder/queries");
+} = require("@coedl/elastic-query-builder/queries");
 
 query.append(
     new BoolQuery()
@@ -138,6 +138,9 @@ To see how to create a whole set of aggregations look at `test-simple-aggregatio
 ### Building a single aggregation query
 
 ```
+const { Query } = require("@coedl/elastic-query-builder")
+const { termsAggregation } = require("@coedl/elastic-query-builder/aggregations")
+
 let query = new Query({});
 query.aggregation(termsAggregation({ name: "type", field: "type.keyword", size: 1 }));
 
@@ -148,6 +151,9 @@ let result = await execute({ index, query: query.toJSON() });
 ### Building multi aggregation query
 
 ```
+const { Query } = require("@coedl/elastic-query-builder")
+const { termsAggregation, cardinalityAggregation } = require("@coedl/elastic-query-builder/aggregations")
+
 let query = new Query({});
 query.aggregation(termsAggregation({ name: "type", field: "type.keyword", size: 1 }));
 query.aggregation(
