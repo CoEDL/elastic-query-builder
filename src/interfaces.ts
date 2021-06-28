@@ -1,14 +1,15 @@
 export interface QueryBodyInterface {
     size: number;
     from: number;
-    query: {};
+    query?: {};
     aggs?: {};
 }
 
 export interface QueryResponseInterface {
     size: number;
     from: number;
-    query: {};
+    query?: {};
+    aggs?: {};
 }
 
 export interface BoolQueryResponseInterface {
