@@ -41,7 +41,7 @@ describe("Test simple aggregation capabilities", () => {
 
         let query = new Query({});
         // data
-        query.aggregation(termsAggregation({ path: "type", field: "type.keyword", size: 1 }));
+        query.aggregation(termsAggregation({ name: "type", field: "type.keyword", size: 1 }));
         query.aggregation(
             cardinalityAggregation({ name: "type_count", field: "type.keyword", size: 1 })
         );
