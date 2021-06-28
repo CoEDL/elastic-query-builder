@@ -11,6 +11,7 @@ export declare class Query {
     size(size: number): this;
     from(from: number): this;
     append(query: {}): this;
+    aggregation(agg: {} | any[]): this;
     toJSON(): QueryResponseInterface;
     toJson(): QueryResponseInterface;
 }

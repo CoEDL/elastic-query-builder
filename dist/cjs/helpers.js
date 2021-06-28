@@ -42,9 +42,9 @@ var fetch = require("node-fetch");
 function execute(_a) {
     var service = _a.service, index = _a.index, query = _a.query;
     return __awaiter(this, void 0, void 0, function () {
-        var headers, response, _b, _c, total, aggregations, documents;
-        return __generator(this, function (_d) {
-            switch (_d.label) {
+        var headers, response, total, aggregations, documents;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
                 case 0:
                     headers = new headers_utils_1.Headers();
                     headers.append("Content-Type", "application/json");
@@ -55,16 +55,13 @@ function execute(_a) {
                             body: JSON.stringify(query),
                         })];
                 case 1:
-                    response = _d.sent();
-                    if (!(response.status !== 200)) return [3 /*break*/, 3];
-                    _c = (_b = console).log;
+                    response = _b.sent();
+                    if (response.status !== 200) {
+                        return [2 /*return*/, response.json()];
+                    }
                     return [4 /*yield*/, response.json()];
                 case 2:
-                    _c.apply(_b, [(_d.sent()).error]);
-                    return [2 /*return*/, {}];
-                case 3: return [4 /*yield*/, response.json()];
-                case 4:
-                    response = _d.sent();
+                    response = _b.sent();
                     total = response.hits.total.value;
                     aggregations = response.aggregations;
                     documents = response.hits.hits;

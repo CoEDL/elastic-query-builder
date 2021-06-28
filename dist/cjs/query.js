@@ -10,6 +10,11 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
+var __spreadArray = (this && this.__spreadArray) || function (to, from) {
+    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
+        to[j] = from[i];
+    return to;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Query = void 0;
 var lodash_1 = require("lodash");
@@ -36,14 +41,28 @@ var Query = /** @class */ (function () {
         this._queries.push(query);
         return this;
     };
+    Query.prototype.aggregation = function (agg) {
+        var aggs = lodash_1.flattenDeep([agg]);
+        this._aggs = __spreadArray(__spreadArray([], this._aggs), aggs);
+        return this;
+    };
     Query.prototype.toJSON = function () {
         var json = __assign({}, lodash_1.cloneDeep(this._body));
+        json.query = {};
+        json.aggs = {};
         if (this._queries.length) {
             var queries = this._queries.map(function (q) {
-                return q.toJSON ? q.toJSON : q;
+                return q.toJSON ? q.toJSON() : q;
             });
-            json.query = this._queries.reduce(function (acc, query) { return (__assign(__assign({}, acc), query)); });
+            json.query = queries.reduce(function (acc, query) { return (__assign(__assign({}, acc), query)); });
         }
+        if (this._aggs.length) {
+            json.aggs = this._aggs.reduce(function (acc, agg) { return (__assign(__assign({}, acc), agg)); });
+        }
+        if (lodash_1.isEmpty(json.query))
+            delete json.query;
+        if (lodash_1.isEmpty(json.aggs))
+            delete json.aggs;
         return json;
     };
     Query.prototype.toJson = function () {
