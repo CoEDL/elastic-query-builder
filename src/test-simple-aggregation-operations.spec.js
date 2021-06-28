@@ -1,5 +1,5 @@
 const { Query } = require("../dist/cjs");
-const { simpleAggregation } = require("../dist/cjs/aggregations");
+const { termsAggregation, cardinalityAggregation } = require("../dist/cjs/aggregations");
 const { execute } = require("../dist/cjs/helpers");
 const path = require("path");
 const { readJSON } = require("fs-extra");
@@ -20,38 +20,37 @@ describe("Test simple aggregation capabilities", () => {
 
         // data
         let query = new Query({});
-        query.aggregation(simpleAggregation({ path: "type", field: "keyword", size: 1 }));
+        query.aggregation(termsAggregation({ name: "type", field: "type.keyword", size: 1 }));
         query = query.toJSON();
         let result = await queryIndex({ index, query });
         // console.log(JSON.stringify(result, null, 2));
-        expect(result.aggregations.type_count.value).toEqual(1);
+        expect(result.aggregations.type.buckets).toEqual([{ key: "person", doc_count: 2 }]);
 
         // data
         query = new Query({});
-        query.aggregation(simpleAggregation({ path: "name", field: "keyword", size: 1 }));
+        query.aggregation(
+            cardinalityAggregation({ name: "type_count", field: "type.keyword", size: 1 })
+        );
         query = query.toJSON();
         result = await queryIndex({ index, query });
         // console.log(JSON.stringify(result, null, 2));
-        expect(result.aggregations.name_count.value).toEqual(2);
+        expect(result.aggregations.type_count.value).toEqual(1);
     });
     test("it should be able to run multiple simple aggregations", async () => {
         await load({ index, file: "test-data/two-documents.json" });
 
         let query = new Query({});
         // data
-        query.aggregation(simpleAggregation({ path: "type", field: "keyword", size: 1 }));
-        query.aggregation(simpleAggregation({ path: "name", field: "keyword", size: 1 }));
+        query.aggregation(termsAggregation({ path: "type", field: "type.keyword", size: 1 }));
+        query.aggregation(
+            cardinalityAggregation({ name: "type_count", field: "type.keyword", size: 1 })
+        );
         query = query.toJSON();
         let result = await queryIndex({ index, query });
         // console.log(JSON.stringify(result, null, 2));
-        expect(Object.keys(result.aggregations).sort()).toEqual([
-            "name",
-            "name_count",
-            "type",
-            "type_count",
-        ]);
+        expect(Object.keys(result.aggregations).sort()).toEqual(["type", "type_count"]);
+        expect(result.aggregations.type.buckets).toEqual([{ key: "person", doc_count: 2 }]);
         expect(result.aggregations.type_count.value).toEqual(1);
-        expect(result.aggregations.name_count.value).toEqual(2);
     });
 });
 
