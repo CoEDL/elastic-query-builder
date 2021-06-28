@@ -5,19 +5,19 @@ describe("Test query constructor capabilities", () => {
     test("it should be able instantiate a new query with default options", () => {
         let query = new Query({});
         let json = query.toJSON();
-        expect(json).toEqual({ size: 10, from: 0, query: {} });
+        expect(json).toEqual({ size: 10, from: 0 });
     });
     test("it should be able set the query size", () => {
         let query = new Query({});
         query = query.size(5);
         let json = query.toJSON();
-        expect(json).toEqual({ size: 5, from: 0, query: {} });
+        expect(json).toEqual({ size: 5, from: 0 });
     });
     test("it should be able set query from", () => {
         let query = new Query({});
         query = query.from(5);
         let json = query.toJSON();
-        expect(json).toEqual({ size: 10, from: 5, query: {} });
+        expect(json).toEqual({ size: 10, from: 5 });
     });
     test("it should be able to push a query onto the stack", () => {
         let query = new Query({});
