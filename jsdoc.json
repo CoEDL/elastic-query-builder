@@ -1,0 +1,16 @@
+{
+    "tags": {
+        "allowUnknownTags": true,
+        "dictionaries": ["jsdoc", "closure"]
+    },
+    "source": {
+        "include": ["dist/cjs"],
+        "includePattern": ".(js)$"
+    },
+    "sourceType": "module",
+    "opts": {
+        "recurse": true,
+        "destination": "./docs",
+        "template": "node_modules/clean-jsdoc-theme"
+    }
+}

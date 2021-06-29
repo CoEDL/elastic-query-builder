@@ -9,7 +9,8 @@
         "build:cjs": "tsc -p tsconfig-es5.json",
         "build:mjs": "tsc -p tsconfig-mjs.json",
         "tests": "./node_modules/.bin/jest --coverage",
-        "tests:watch": "./node_modules/.bin/jest --watch"
+        "tests:watch": "./node_modules/.bin/jest --watch",
+        "generate-docs": "node_modules/.bin/jsdoc --configure jsdoc.json --verbose"
     },
     "engines": {
         "node": ">=14"
@@ -32,9 +33,11 @@
     "author": "Marco La Rosa",
     "license": "GPLV3",
     "devDependencies": {
+        "clean-jsdoc-theme": "^3.2.7",
         "concurrently": "^6.2.0",
         "fs-extra": "^10.0.0",
         "jest": "^27.0.5",
+        "jsdoc": "^3.6.7",
         "prettier": "^2.3.1",
         "typescript": "^4.3.4"
     },
