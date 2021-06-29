@@ -19,11 +19,20 @@
 
     <!-- Adding style-->
     
+    
+    <link type="text/css" rel="stylesheet" href="theme.css">
+    
+    
 
     <!-- Adding overlay script-->
     
 
     <!-- Adding overlay style-->
+    
+    <link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/overlayscrollbars/1.13.0/css/OverlayScrollbars.min.css"
+      integrity="sha512-pYQcc5kgavar0ah58/O8hw/6Tbo3mWlmQTmvoi1i96cBz7jQYS9as5J+Nfy32rAHY6CgR9ExwnFMcBdGVcKM7g=="
+      crossorigin="anonymous" />
     
 
 
@@ -81,7 +90,7 @@
   <body>
 
     <nav class="navbar" id="navbar">
-      <div class="navbar-heading" id="navbar-heading"><a href="index.html"><h2 class="navbar-heading-text">Home</h2></a></div><div class="search-box" id="search-box"><div class="search-box-input-container"><input class="search-box-input" type="text" placeholder="Search..." id="search-box-input" /><svg class="search-icon" alt="search-icon"><use xlink:href="#search-icon"></use></svg></div><div class="search-item-container" id="search-item-container"><ul class="search-item-ul" id="search-item-ul"></ul></div></div><div class="sidebar-main-content" id="sidebar-main-content"><div class="accordion collapsed" id="992507" > <h3 class="accordion-heading">Namespaces<svg><use xlink:href="#down-icon"></use></svg></h3><ul class="accordion-content"><li class="accordion collapsed child" id=7286272><div class="accordion-heading child"><a href="full-text-queries.html">full-text-queries</a><svg><use xlink:href="#down-icon"></use></svg></div><ul class='methods accordion-content'><li data-type='method'><a href="full-text-queries.html#.matchPhraseQuery">matchPhraseQuery</a></li><li data-type='method'><a href="full-text-queries.html#.matchQuery">matchQuery</a></li></ul></li><li class="accordion collapsed child" id=2573382><div class="accordion-heading child"><a href="term-level-queries.html">term-level-queries</a><svg><use xlink:href="#down-icon"></use></svg></div><ul class='methods accordion-content'><li data-type='method'><a href="term-level-queries.html#.rangeQuery">rangeQuery</a></li><li data-type='method'><a href="term-level-queries.html#.termQuery">termQuery</a></li><li data-type='method'><a href="term-level-queries.html#.wildcardQuery">wildcardQuery</a></li></ul></li></ul> </div><div class="accordion collapsed" id="1481073" > <h3 class="accordion-heading">Global<svg><use xlink:href="#down-icon"></use></svg></h3><ul class="accordion-content"><li class="accordion-list" id=""><a href="global.html#termsAggregation">termsAggregation</a></li></ul> </div></div>
+      <div class="navbar-heading" id="navbar-heading"><a href="index.html"><h2 class="navbar-heading-text">Home</h2></a></div><div class="search-box" id="search-box"><div class="search-box-input-container"><input class="search-box-input" type="text" placeholder="Search..." id="search-box-input" /><svg class="search-icon" alt="search-icon"><use xlink:href="#search-icon"></use></svg></div><div class="search-item-container" id="search-item-container"><ul class="search-item-ul" id="search-item-ul"></ul></div></div><div class="sidebar-main-content" id="sidebar-main-content"><div class="accordion collapsed" id="1275097" > <h3 class="accordion-heading">Classes<svg><use xlink:href="#down-icon"></use></svg></h3><ul class="accordion-content"><li class="accordion-list" id=""><a href="BoolQuery.html">BoolQuery</a></li></ul> </div><div class="accordion collapsed" id="4974538" > <h3 class="accordion-heading">Namespaces<svg><use xlink:href="#down-icon"></use></svg></h3><ul class="accordion-content"><li class="accordion collapsed child" id=4464534><div class="accordion-heading child"><a href="bucket-aggregations.html">bucket-aggregations</a><svg><use xlink:href="#down-icon"></use></svg></div><ul class='methods accordion-content'><li data-type='method'><a href="bucket-aggregations.html#.termsAggregation">termsAggregation</a></li></ul></li><li class="accordion collapsed child" id=7136541><div class="accordion-heading child"><a href="full-text-queries.html">full-text-queries</a><svg><use xlink:href="#down-icon"></use></svg></div><ul class='methods accordion-content'><li data-type='method'><a href="full-text-queries.html#.matchPhraseQuery">matchPhraseQuery</a></li><li data-type='method'><a href="full-text-queries.html#.matchQuery">matchQuery</a></li></ul></li><li class="accordion collapsed child" id=9432411><div class="accordion-heading child"><a href="metrics-aggregations.html">metrics-aggregations</a><svg><use xlink:href="#down-icon"></use></svg></div><ul class='methods accordion-content'><li data-type='method'><a href="metrics-aggregations.html#.cardinalityAggregation">cardinalityAggregation</a></li></ul></li><li class="accordion collapsed child" id=1027839><div class="accordion-heading child"><a href="term-level-queries.html">term-level-queries</a><svg><use xlink:href="#down-icon"></use></svg></div><ul class='methods accordion-content'><li data-type='method'><a href="term-level-queries.html#.rangeQuery">rangeQuery</a></li><li data-type='method'><a href="term-level-queries.html#.termQuery">termQuery</a></li><li data-type='method'><a href="term-level-queries.html#.wildcardQuery">wildcardQuery</a></li></ul></li></ul> </div><div class="accordion collapsed" id="5931820" > <h3 class="accordion-heading">Global<svg><use xlink:href="#down-icon"></use></svg></h3><ul class="accordion-content"><li class="accordion-list" id=""><a href="global.html#must">must</a></li></ul> </div></div>
       
 
     </nav>
@@ -145,18 +154,14 @@
 
     
 
-    <h4 class="name" id="termsAggregation">
-        <a href="#termsAggregation">#</a>
-        <span class="type-signature"></span>termsAggregation<span class="signature">(name, field, size)</span><span class="type-signature"> &rarr; {Object}</span>
+    <h4 class="name" id="must">
+        <a href="#must">#</a>
+        <span class="type-signature"></span>must<span class="signature">(query)</span><span class="type-signature"></span>
     </h4>
 
     
 
 
-
-    <div class="description">
-        Assemble a termsAggregation fragment.
-    </div>
 
 
 
@@ -192,13 +197,16 @@
 
         <tr>
             
-                <td class="name"><code>name</code></td>
+                <td class="name"><code>query</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">Object</span>
+|
+
+<span class="param-type">array</span>
 
 
             
@@ -208,53 +216,7 @@
 
             
 
-            <td class="description last">the label for the aggregation</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>field</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">the field on which to aggregate - can be a dotted path like publisher.name</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>size</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">the number of buckets to return</td>
+            <td class="description last">must query clauses</td>
         </tr>
 
     
@@ -299,22 +261,13 @@
         <div class="details-item-container">
             <dt class="tag-source">Source:</dt>
             <dd class="tag-source"><ul class="dummy"><li>
-                <a href="aggregations_bucket-aggregations_terms-aggregation.js.html">aggregations/bucket-aggregations/terms-aggregation.js</a>, <a href="aggregations_bucket-aggregations_terms-aggregation.js.html#line4">line 4</a>
+                <a href="bool-query.js.html">bool-query.js</a>, <a href="bool-query.js.html#line36">line 36</a>
             </li></ul></dd>
         </div>
     
 
     
 
-    
-        <div class="details-item-container">
-            <dt class="tag-see">See:</dt>
-            <dd class="tag-see">
-                <ul>
-                    <li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-terms-aggregation.html">https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-terms-aggregation.html</a></li>
-                </ul>
-            </dd>
-        </div>
     
 
     
@@ -339,38 +292,15 @@
         
             
 <div class="param-desc">
-    a query fragment
+    this
 </div>
 
 
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Object</span>
-
-
-    </dd>
-</dl>
 
             
     </div>
 
 
-
-    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
-        <strong>Example</strong>
-        
-    <div class="rel">
-    <pre class="prettyprint"><code>termsAggregation({ name: '@type', field: '@type.keyword', size: 12 })</code></pre>
-    
-    
-    </div>
-
-    </div>
 
 
         
@@ -404,7 +334,7 @@
       <script src="scripts/search.js"></script>
       <script src="scripts/third-party/fuse.js"></script>
       <script>
-        var list = [{"title":"full-text-queries","link":"<a href=\"full-text-queries.html\">full-text-queries</a>"},{"title":"full-text-queries.matchPhraseQuery","link":"<a href=\"full-text-queries.html#.matchPhraseQuery\">full-text-queries.matchPhraseQuery &rtrif; undefined</a>"},{"title":"full-text-queries.matchQuery","link":"<a href=\"full-text-queries.html#.matchQuery\">full-text-queries.matchQuery &rtrif; undefined</a>"},{"title":"term-level-queries","link":"<a href=\"term-level-queries.html\">term-level-queries</a>"},{"title":"term-level-queries.rangeQuery","link":"<a href=\"term-level-queries.html#.rangeQuery\">term-level-queries.rangeQuery &rtrif; undefined</a>"},{"title":"term-level-queries.termQuery","link":"<a href=\"term-level-queries.html#.termQuery\">term-level-queries.termQuery &rtrif; undefined</a>"},{"title":"term-level-queries.wildcardQuery","link":"<a href=\"term-level-queries.html#.wildcardQuery\">term-level-queries.wildcardQuery &rtrif; undefined</a>"},{"title":"termsAggregation","link":"<a href=\"global.html#termsAggregation\">termsAggregation</a>"}];
+        var list = [{"title":"BoolQuery","link":"<a href=\"BoolQuery.html\">BoolQuery</a>"},{"title":"bucket-aggregations","link":"<a href=\"bucket-aggregations.html\">bucket-aggregations</a>"},{"title":"bucket-aggregations.termsAggregation","link":"<a href=\"bucket-aggregations.html#.termsAggregation\">bucket-aggregations.termsAggregation &rtrif; undefined</a>"},{"title":"full-text-queries","link":"<a href=\"full-text-queries.html\">full-text-queries</a>"},{"title":"full-text-queries.matchPhraseQuery","link":"<a href=\"full-text-queries.html#.matchPhraseQuery\">full-text-queries.matchPhraseQuery &rtrif; undefined</a>"},{"title":"full-text-queries.matchQuery","link":"<a href=\"full-text-queries.html#.matchQuery\">full-text-queries.matchQuery &rtrif; undefined</a>"},{"title":"metrics-aggregations","link":"<a href=\"metrics-aggregations.html\">metrics-aggregations</a>"},{"title":"metrics-aggregations.cardinalityAggregation","link":"<a href=\"metrics-aggregations.html#.cardinalityAggregation\">metrics-aggregations.cardinalityAggregation &rtrif; undefined</a>"},{"title":"term-level-queries","link":"<a href=\"term-level-queries.html\">term-level-queries</a>"},{"title":"term-level-queries.rangeQuery","link":"<a href=\"term-level-queries.html#.rangeQuery\">term-level-queries.rangeQuery &rtrif; undefined</a>"},{"title":"term-level-queries.termQuery","link":"<a href=\"term-level-queries.html#.termQuery\">term-level-queries.termQuery &rtrif; undefined</a>"},{"title":"term-level-queries.wildcardQuery","link":"<a href=\"term-level-queries.html#.wildcardQuery\">term-level-queries.wildcardQuery &rtrif; undefined</a>"},{"title":"must","link":"<a href=\"global.html#must\">must</a>"}];
         var options = 
           setupSearch(list, options)
       </script>

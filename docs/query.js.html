@@ -37,7 +37,7 @@
 
 
     <title>
-      aggregations/bucket-aggregations/namespace.js
+      query.js
     </title>
 
     <!--[if lt IE 9]>
@@ -105,7 +105,7 @@
     <div id="main" class="main-content">
       
       <h1 id='page-title' class="page-title">
-        aggregations/bucket-aggregations/namespace.js
+        query.js
       </h1>
       
 
@@ -117,9 +117,131 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>"use strict";
+var __assign = (this &amp;&amp; this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i &lt; n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+var __spreadArray = (this &amp;&amp; this.__spreadArray) || function (to, from) {
+    for (var i = 0, il = from.length, j = to.length; i &lt; il; i++, j++)
+        to[j] = from[i];
+    return to;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Query = void 0;
+var lodash_1 = require("lodash");
 /**
- * @namespace bucket-aggregations
+ * @module Query
  */
+/**
+ * @name Query
+ * @description Assemble an elastic query.
+ * @see {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-your-data.html}
+ * @class
+ * @example
+ *  new Query()
+ */
+var Query = /** @class */ (function () {
+    function Query(_a) {
+        var _b = _a.size, size = _b === void 0 ? 10 : _b, _c = _a.from, from = _c === void 0 ? 0 : _c;
+        this._body = {
+            size: size,
+            from: from,
+            query: {},
+        };
+        this._queries = [];
+        this._aggs = [];
+    }
+    /**
+     * Define how many query results to return
+     *
+     * @param {number} size
+     * @returns this
+     * @example
+     *  new Query({}).size(20)
+     */
+    Query.prototype.size = function (size) {
+        this._body.size = size;
+        return this;
+    };
+    /**
+     * Define where to return results from (pagination)
+     *
+     * @param {number} from
+     * @returns this
+     * @example
+     *  new Query({}).from(20)
+     */
+    Query.prototype.from = function (from) {
+        this._body.from = from;
+        return this;
+    };
+    /**
+     * Append a query clause to this query
+     *
+     * @param {Object} query
+     * @returns this
+     * @example
+     *  new Query({}).append( { some query clause } )
+     */
+    Query.prototype.append = function (query) {
+        this._queries.push(query);
+        return this;
+    };
+    /**
+     * Append aggregations to this query
+     *
+     * @param {Object | array} query
+     * @returns this
+     * @example
+     *  new Query({}).aggregation( [ array of aggregation clauses ] )
+     */
+    Query.prototype.aggregation = function (agg) {
+        var aggs = lodash_1.flattenDeep([agg]);
+        this._aggs = __spreadArray(__spreadArray([], this._aggs), aggs);
+        return this;
+    };
+    /**
+     * Get a JSON representation of this object
+     *
+     * @returns {json}
+     */
+    Query.prototype.toJSON = function () {
+        var json = __assign({}, lodash_1.cloneDeep(this._body));
+        json.query = {};
+        json.aggs = {};
+        if (this._queries.length) {
+            var queries = this._queries.map(function (q) {
+                return q.toJSON ? q.toJSON() : q;
+            });
+            json.query = queries.reduce(function (acc, query) { return (__assign(__assign({}, acc), query)); });
+        }
+        if (this._aggs.length) {
+            json.aggs = this._aggs.reduce(function (acc, agg) { return (__assign(__assign({}, acc), agg)); });
+        }
+        if (lodash_1.isEmpty(json.query))
+            delete json.query;
+        if (lodash_1.isEmpty(json.aggs))
+            delete json.aggs;
+        return json;
+    };
+    /**
+     * Get a JSON representation of this object
+     *
+     * @returns {json}
+     */
+    Query.prototype.toJson = function () {
+        return this.toJSON();
+    };
+    return Query;
+}());
+exports.Query = Query;
 </code></pre>
         </article>
     </section>
