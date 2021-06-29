@@ -8,8 +8,8 @@ import { cloneDeep, flattenDeep, isEmpty } from "lodash";
  * @see {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-your-data.html}
  * @class
  * @param {Object} init
- * @param {string} init.size - the number of query results to return
- * @param {String} init.from - where to return results from
+ * @param {number} init.size - the number of query results to return
+ * @param {number} init.from - where to return results from
  * @example
  *  new Query({})
  * @example
