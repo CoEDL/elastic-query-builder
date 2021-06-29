@@ -18,6 +18,17 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BoolQuery = void 0;
 var lodash_1 = require("lodash");
+/**
+ * @module BoolQuery
+ */
+/**
+ * @name BoolQuery
+ * @description Assemble Boolean query.
+ * @see {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html}
+ * @class
+ * @example
+ *  new BoolQuery()
+ */
 var BoolQuery = /** @class */ (function () {
     function BoolQuery() {
         this._must = [];
@@ -25,26 +36,64 @@ var BoolQuery = /** @class */ (function () {
         this._filter = [];
         this._mustNot = [];
     }
+    /**
+     * Append a must clause or array of must clauses
+     *
+     * @param {Object | array } query - must query clauses
+     * @returns this
+     * @example
+     *  new BoolQuery().must( [query clauses that must match] )
+     */
     BoolQuery.prototype.must = function (query) {
         var queries = lodash_1.flattenDeep([query]);
         this._must = __spreadArray(__spreadArray([], this._must), queries);
         return this;
     };
+    /**
+     * Append a filter clause or array of filter clauses
+     *
+     * @param {Object | array } query - filter query clauses
+     * @returns this
+     * @example
+     *  new BoolQuery().filter( [query clauses for filtering] )
+     */
     BoolQuery.prototype.filter = function (query) {
         var queries = lodash_1.flattenDeep([query]);
         this._filter = __spreadArray(__spreadArray([], this._filter), queries);
         return this;
     };
+    /**
+     * Append a should clause or array of should clauses
+     *
+     * @param {Object | array } query - should query clauses
+     * @returns this
+     * @example
+     *  new BoolQuery().should( [query clauses that should match] )
+     *
+     */
     BoolQuery.prototype.should = function (query) {
         var queries = lodash_1.flattenDeep([query]);
         this._should = __spreadArray(__spreadArray([], this._should), queries);
         return this;
     };
+    /**
+     * Append a mustNot clause or array of mustNot clauses
+     *
+     * @param {Object | array } query - mustNot query clauses
+     * @returns this
+     * @example
+     *  new BoolQuery().mustNot( [query clauses that mustNot match] )
+     */
     BoolQuery.prototype.mustNot = function (query) {
         var queries = lodash_1.flattenDeep([query]);
         this._mustNot = __spreadArray(__spreadArray([], this._mustNot), queries);
         return this;
     };
+    /**
+     * Get a JSON representation of this object
+     *
+     * @returns {json}
+     */
     BoolQuery.prototype.toJSON = function () {
         var _a;
         var json = {
@@ -64,6 +113,11 @@ var BoolQuery = /** @class */ (function () {
         }
         return json;
     };
+    /**
+     * Get a JSON representation of this object
+     *
+     * @returns {json}
+     */
     BoolQuery.prototype.toJson = function () {
         return this.toJSON();
     };

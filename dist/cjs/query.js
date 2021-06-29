@@ -18,6 +18,17 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Query = void 0;
 var lodash_1 = require("lodash");
+/**
+ * @module Query
+ */
+/**
+ * @name Query
+ * @description Assemble an elastic query.
+ * @see {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-your-data.html}
+ * @class
+ * @example
+ *  new Query()
+ */
 var Query = /** @class */ (function () {
     function Query(_a) {
         var _b = _a.size, size = _b === void 0 ? 10 : _b, _c = _a.from, from = _c === void 0 ? 0 : _c;
@@ -29,23 +40,60 @@ var Query = /** @class */ (function () {
         this._queries = [];
         this._aggs = [];
     }
+    /**
+     * Define how many query results to return
+     *
+     * @param {number} size
+     * @returns this
+     * @example
+     *  new Query({}).size(20)
+     */
     Query.prototype.size = function (size) {
         this._body.size = size;
         return this;
     };
+    /**
+     * Define where to return results from (pagination)
+     *
+     * @param {number} from
+     * @returns this
+     * @example
+     *  new Query({}).from(20)
+     */
     Query.prototype.from = function (from) {
         this._body.from = from;
         return this;
     };
+    /**
+     * Append a query clause to this query
+     *
+     * @param {Object} query
+     * @returns this
+     * @example
+     *  new Query({}).append( { some query clause } )
+     */
     Query.prototype.append = function (query) {
         this._queries.push(query);
         return this;
     };
+    /**
+     * Append aggregations to this query
+     *
+     * @param {Object | array} query
+     * @returns this
+     * @example
+     *  new Query({}).aggregation( [ array of aggregation clauses ] )
+     */
     Query.prototype.aggregation = function (agg) {
         var aggs = lodash_1.flattenDeep([agg]);
         this._aggs = __spreadArray(__spreadArray([], this._aggs), aggs);
         return this;
     };
+    /**
+     * Get a JSON representation of this object
+     *
+     * @returns {json}
+     */
     Query.prototype.toJSON = function () {
         var json = __assign({}, lodash_1.cloneDeep(this._body));
         json.query = {};
@@ -65,6 +113,11 @@ var Query = /** @class */ (function () {
             delete json.aggs;
         return json;
     };
+    /**
+     * Get a JSON representation of this object
+     *
+     * @returns {json}
+     */
     Query.prototype.toJson = function () {
         return this.toJSON();
     };
