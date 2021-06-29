@@ -29,7 +29,7 @@ export class BoolQuery {
     /**
      * Append a must clause or array of must clauses
      *
-     * @param {Object | array } query - must query clauses
+     * @param {Object | array } query - query clauses
      * @returns this
      * @example
      *  new BoolQuery().must( [query clauses that must match] )
@@ -42,7 +42,7 @@ export class BoolQuery {
     /**
      * Append a filter clause or array of filter clauses
      *
-     * @param {Object | array } query - filter query clauses
+     * @param {Object | array } query - query clauses
      * @returns this
      * @example
      *  new BoolQuery().filter( [query clauses for filtering] )
@@ -56,7 +56,7 @@ export class BoolQuery {
     /**
      * Append a should clause or array of should clauses
      *
-     * @param {Object | array } query - should query clauses
+     * @param {Object | array } query - query clauses
      * @returns this
      * @example
      *  new BoolQuery().should( [query clauses that should match] )
@@ -70,7 +70,7 @@ export class BoolQuery {
     /**
      * Append a mustNot clause or array of mustNot clauses
      *
-     * @param {Object | array } query - mustNot query clauses
+     * @param {Object | array } query - query clauses
      * @returns this
      * @example
      *  new BoolQuery().mustNot( [query clauses that mustNot match] )

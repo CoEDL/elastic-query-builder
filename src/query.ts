@@ -15,8 +15,15 @@ interface QueryConstructor {
  * @description Assemble an elastic query.
  * @see {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-your-data.html}
  * @class
+ * @param {Object} init
+ * @param {string} init.size - the number of query results to return
+ * @param {String} init.from - where to return results from
  * @example
- *  new Query()
+ *  new Query({})
+ * @example
+ *  new Query({ size: 20 })
+ * @example
+ *  new Query({ size: 20, from 123 })
  */
 export class Query {
     private _body: QueryBodyInterface;
@@ -38,6 +45,7 @@ export class Query {
      *
      * @param {number} size
      * @returns this
+     * @see {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/paginate-search-results.html}
      * @example
      *  new Query({}).size(20)
      */
@@ -51,6 +59,7 @@ export class Query {
      *
      * @param {number} from
      * @returns this
+     * @see {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/paginate-search-results.html}
      * @example
      *  new Query({}).from(20)
      */
