@@ -5,12 +5,12 @@
     "main": "index.js",
     "scripts": {
         "develop": "rm -fr dist/* && tsc -w -p tsconfig-es5.json",
-        "build": "rm -fr dist/* && concurrently 'npm:build:cjs' 'npm:build:mjs'",
+        "build": "rm -fr dist/* && concurrently 'npm:build:cjs' 'npm:build:mjs' && npm run generate-docs",
         "build:cjs": "tsc -p tsconfig-es5.json",
         "build:mjs": "tsc -p tsconfig-mjs.json",
         "tests": "./node_modules/.bin/jest --coverage",
         "tests:watch": "./node_modules/.bin/jest --watch",
-        "generate-docs": "node_modules/.bin/jsdoc --configure jsdoc.json --verbose"
+        "generate-docs": "./node_modules/.bin/jsdoc --configure jsdoc.json --verbose"
     },
     "engines": {
         "node": ">=14"

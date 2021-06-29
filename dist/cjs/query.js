@@ -26,8 +26,15 @@ var lodash_1 = require("lodash");
  * @description Assemble an elastic query.
  * @see {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-your-data.html}
  * @class
+ * @param {Object} init
+ * @param {string} init.size - the number of query results to return
+ * @param {String} init.from - where to return results from
  * @example
- *  new Query()
+ *  new Query({})
+ * @example
+ *  new Query({ size: 20 })
+ * @example
+ *  new Query({ size: 20, from 123 })
  */
 var Query = /** @class */ (function () {
     function Query(_a) {
@@ -45,6 +52,7 @@ var Query = /** @class */ (function () {
      *
      * @param {number} size
      * @returns this
+     * @see {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/paginate-search-results.html}
      * @example
      *  new Query({}).size(20)
      */
@@ -57,6 +65,7 @@ var Query = /** @class */ (function () {
      *
      * @param {number} from
      * @returns this
+     * @see {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/paginate-search-results.html}
      * @example
      *  new Query({}).from(20)
      */
