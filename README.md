@@ -5,17 +5,14 @@
   - [Folder setup](#folder-setup)
   - [Adding a query or aggregation](#adding-a-query-or-aggregation)
   - [Publishing a new version](#publishing-a-new-version)
-  - [Usage - queries](#usage---queries)
-    - [Building a basic match query](#building-a-basic-match-query)
-    - [Building a simple Bool query](#building-a-simple-bool-query)
-    - [Building a multiple level nested Bool query](#building-a-multiple-level-nested-bool-query)
-  - [Usage - aggregations](#usage---aggregations)
-    - [Building a single aggregation query](#building-a-single-aggregation-query)
-    - [Building multi aggregation query](#building-multi-aggregation-query)
+  - [Usage - tutorial](#usage---tutorial)
 
 Inspired by [https://elastic-builder.js.org/docs/](https://elastic-builder.js.org/docs/). I couldn't
 get it to work in the browser but the ideas are very cool so I thought I'd use this opportunity to
 setup up a typescript library that supports both CommonJS (cjs) and ES (mjs) modules.
+
+API documentation is available at
+[https://coedl.github.io/elastic-query-builder/](https://coedl.github.io/elastic-query-builder/)
 
 ## Developing the library
 
@@ -25,7 +22,7 @@ In a terminal:
 > npm run develop
 ```
 
-This setups typescript in watch mode to compile the code.
+This sets up typescript in watch mode to compile the code.
 
 In another terminal:
 
@@ -41,6 +38,7 @@ that the tests use cjs imports from the cjs bundles in `dist`.
 ## Folder setup
 
 -   `dist`: the built code - built by typescript - you should never be working in this folder
+-   `docs`: the API docs - built by jsdoc - you should never be working in this folder
 -   `src/queries/*`: the query fragment generators. Folder structure follows the categorisation @
     [https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html)
 -   `src/aggregations/*`: the aggregation fragment generators. Folder structure follows the
@@ -54,112 +52,92 @@ Say you needed an interval query as defined in `QueryDSL: Full Text Queries`:
 -   Add `src/queries/full-text-queries/interval-query.ts` with code to return the query fragment
 -   Add a test for it in `src/queries/full-text-queries/interval-query.spec.js` (note the JS
     suffix - see note above re: jest and es modules)
--   Register the query in `src/queris/index.ts`
--   Add an actual test for the query in `test-simple-operations.spec.js` (remember that local query
-    test should just check that the returned JSON fragment is correct)
+-   Register the query in `src/queries/index.ts`
 
 ## Publishing a new version
 
 -   Build the distributables `(dist)`: `> npm run build`
--   Check it in: `> git add dist && git commit`
+-   Check it in: `> git add dist docs && git commit`
 -   Bump the version: `npm version [major | minor | patch ]` as required
 -   Publish: `npm publish`
 
-## Usage - queries
+## Usage - tutorial
 
-To see how to create a whole set of queries look at `test-search-operations.spec.js`
-
-### Building a basic match query
+The base building block is the `Query` class. Instantiate this to start building a query:
 
 ```
-const { Query } = require("@coedl/elastic-query-builder");
-const {
-    matchQuery,
-} = require("@coedl/elastic-query-builder/queries");
+import { Query } from '@coedl/elastic-query-builder'
 
-let query = new Query({});
-query.append(matchQuery({ field: "type", value: "person" }));
-
-// this is however you execute a query against elastic: see helpers.ts for the method
-let result = await execute({ index, query });
+let query = new Query({})
 ```
 
-### Building a simple Bool query
+Once you have a query object you can append a query clause to it:
 
 ```
-const { Query, BoolQuery } = require("@coedl/elastic-query-builder");
-const {
-    matchQuery,
-    matchPhraseQuery
-} = require("@coedl/elastic-query-builder/queries");
+import { termQuery } from '@coedl/elastic-query-builder/queries'
 
-query.append(
+query = query.append(termQuery({}))
+
+```
+
+Or if you have a complex set of queries append a `BoolQuery`:
+
+```
+import { BoolQuery } from '@coedl/elastic-query-builder'
+import { termQuery, matchQuery, rangeQuery } from '@coedl/elastic-query-builder/queries'
+
+query = query.append(
     new BoolQuery()
-        .must([
-            matchQuery({ field: "author.email.keyword", value: "persona@email.com" }),
-            matchPhraseQuery({ field: "type", value: "person" }),
-        ])
-)
-
-// this is however you execute a query against elastic: see helpers.ts for the method
-let result = await execute({ index, query: query.toJSON() });
+        .must( [termQuery()] )
+        .should( [matchQuery(), rangeQuery({}) ])
 ```
 
-### Building a multiple level nested Bool query
+Multi level compound queries are supported:
 
 ```
-const { Query, BoolQuery } = require("@coedl/elastic-query-builder");
-const {
-    matchQuery,
-    matchPhraseQuery
-} = require("@coedl/elastic-query-builder/queries");
-
-query.append(
+query = query.append(
     new BoolQuery()
-        .must([
-            matchQuery({ field: "author.email.keyword", value: "persona@email.com" }),
-            matchPhraseQuery({ field: "type", value: "person" }),
-            new BoolQuery().should(
-                matchQuery({ field: "author.email.keyword", value: "persona@email.com" }),
-                matchQuery({ field: "author.email.keyword", value: "personb@email.com" })
-            ),
-        ])
-        .should([])
-);
-
-// this is however you execute a query against elastic: see helpers.ts for the method
-let result = await queryIndex({ index, query: query.toJSON() });
+        .must( [
+            termQuery(),
+            new BoolQuery()
+                .should( [termQuery, rangeQuery] )
+        ] )
+        .should( [matchQuery(), rangeQuery({}) ])
 ```
 
-## Usage - aggregations
+Notice we're always storing the return query.
 
-To see how to create a whole set of aggregations look at `test-simple-aggregation-operations.js`
-
-### Building a single aggregation query
+When you're ready to search get the JSON representation of the query and search away:
 
 ```
-const { Query } = require("@coedl/elastic-query-builder")
-const { termsAggregation } = require("@coedl/elastic-query-builder/aggregations")
+query = query.toJSON()
 
-let query = new Query({});
-query.aggregation(termsAggregation({ name: "type", field: "type.keyword", size: 1 }));
-
-// this is however you execute a query against elastic: see helpers.ts for the method
-let result = await execute({ index, query: query.toJSON() });
-```
-
-### Building multi aggregation query
+// this is however you execute a query against elastic: see helpers.ts for the method let result =
+await execute({ index, query });
 
 ```
-const { Query } = require("@coedl/elastic-query-builder")
-const { termsAggregation, cardinalityAggregation } = require("@coedl/elastic-query-builder/aggregations")
 
-let query = new Query({});
-query.aggregation(termsAggregation({ name: "type", field: "type.keyword", size: 1 }));
-query.aggregation(
-    cardinalityAggregation({ name: "type_count", field: "type.keyword", size: 1 })
-)
+Aggregations are added in the same way:
 
-// this is however you execute a query against elastic: see helpers.ts for the method
-let result = await execute({ index, query: query.toJSON() });
+```
+import { termsAggregation } from '@coed/elastic-query-builder/aggregations'
+
+query = query.aggregation(termsAggregation({}))
+```
+
+Or many aggregations:
+
+```
+import { termsAggregation, cardinalityAggregation } from '@coed/elastic-query-builder/aggregations'
+
+query = query.aggregation([ termsAggregation({}), cardinalityAggregation({}) ])
+```
+
+And then execute:
+
+```
+query = query.toJSON()
+
+// this is however you execute a query against elastic: see helpers.ts for the method let result
+await execute({ index, query });
 ```

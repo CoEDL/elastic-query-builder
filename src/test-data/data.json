@@ -1,0 +1,50 @@
+[
+    {
+        "type": "person",
+        "name": "person a",
+        "description": "person a description",
+        "age": 20
+    },
+    {
+        "type": "person",
+        "name": "person b",
+        "description": "person b description",
+        "age": 40
+    },
+    {
+        "type": "person",
+        "name": "person c",
+        "description": "person c description",
+        "age": 50
+    },
+    {
+        "type": "dataset",
+        "name": "dataset a",
+        "description": "dataset a description"
+    },
+    {
+        "type": "dataset",
+        "name": "dataset b",
+        "description": "dataset b description"
+    },
+    {
+        "type": "dataset",
+        "name": "dataset c",
+        "description": "dataset c description"
+    },
+    {
+        "type": "country",
+        "name": "country a",
+        "description": "country a description"
+    },
+    {
+        "type": "country",
+        "name": "country b",
+        "description": "country b description"
+    },
+    {
+        "type": "country",
+        "name": "country c",
+        "description": "country c description"
+    }
+]
