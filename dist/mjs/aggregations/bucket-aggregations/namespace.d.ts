@@ -1,0 +1,3 @@
+/**
+ * @namespace bucket-aggregations
+ */
