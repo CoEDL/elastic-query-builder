@@ -22,8 +22,11 @@ interface QueryConstructor {
  *  new Query({ size: 20, from 123 })
  */
 export declare class Query {
-    private _body;
-    private _queries;
+    private _size;
+    private _from;
+    private _sort;
+    private _fields;
+    private _query;
     private _aggs;
     constructor({ size, from }: QueryConstructor);
     /**
@@ -46,6 +49,30 @@ export declare class Query {
      *  new Query({}).from(20)
      */
     from(from: number): this;
+    /**
+     * Define result sorting
+     *
+     * @param {string | array } sort
+     * @returns this
+     * @see {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/sort-search-results.html}
+     * @example
+     *  new Query({}).sort('user')
+     * @example
+     *  new Query({}).sort(['user', '_score'])
+     */
+    sort(sort: string | any[]): this;
+    /**
+     * Define which fields to return
+     *
+     * @param {string | array } fields
+     * @returns this
+     * @see {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-fields.html}
+     * @example
+     *  new Query({}).fields('user.id')
+     * @example
+     *  new Query({}).fields(['user.id', 'http.response.*'])
+     */
+    fields(fields: string | any[]): this;
     /**
      * Append a query clause to this query
      *

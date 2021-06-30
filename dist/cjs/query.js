@@ -39,12 +39,11 @@ var lodash_1 = require("lodash");
 var Query = /** @class */ (function () {
     function Query(_a) {
         var _b = _a.size, size = _b === void 0 ? 10 : _b, _c = _a.from, from = _c === void 0 ? 0 : _c;
-        this._body = {
-            size: size,
-            from: from,
-            query: {},
-        };
-        this._queries = [];
+        this._size = size;
+        this._from = from;
+        this._sort = [];
+        this._fields = [];
+        this._query = {};
         this._aggs = [];
     }
     /**
@@ -57,7 +56,7 @@ var Query = /** @class */ (function () {
      *  new Query({}).size(20)
      */
     Query.prototype.size = function (size) {
-        this._body.size = size;
+        this._size = size;
         return this;
     };
     /**
@@ -70,7 +69,45 @@ var Query = /** @class */ (function () {
      *  new Query({}).from(20)
      */
     Query.prototype.from = function (from) {
-        this._body.from = from;
+        this._from = from;
+        return this;
+    };
+    /**
+     * Define result sorting
+     *
+     * @param {string | array } sort
+     * @returns this
+     * @see {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/sort-search-results.html}
+     * @example
+     *  new Query({}).sort('user')
+     * @example
+     *  new Query({}).sort(['user', '_score'])
+     */
+    Query.prototype.sort = function (sort) {
+        if (lodash_1.isUndefined(sort))
+            return this;
+        if (lodash_1.isString(sort))
+            sort = [sort];
+        this._sort = __spreadArray(__spreadArray([], this._sort), sort);
+        return this;
+    };
+    /**
+     * Define which fields to return
+     *
+     * @param {string | array } fields
+     * @returns this
+     * @see {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-fields.html}
+     * @example
+     *  new Query({}).fields('user.id')
+     * @example
+     *  new Query({}).fields(['user.id', 'http.response.*'])
+     */
+    Query.prototype.fields = function (fields) {
+        if (lodash_1.isUndefined(fields))
+            return this;
+        if (lodash_1.isString(fields))
+            fields = [fields];
+        this._fields = __spreadArray(__spreadArray([], this._fields), fields);
         return this;
     };
     /**
@@ -82,7 +119,7 @@ var Query = /** @class */ (function () {
      *  new Query({}).append( { some query clause } )
      */
     Query.prototype.append = function (query) {
-        this._queries.push(query);
+        this._query = query;
         return this;
     };
     /**
@@ -104,15 +141,18 @@ var Query = /** @class */ (function () {
      * @returns {json}
      */
     Query.prototype.toJSON = function () {
-        var json = __assign({}, lodash_1.cloneDeep(this._body));
-        json.query = {};
-        json.aggs = {};
-        if (this._queries.length) {
-            var queries = this._queries.map(function (q) {
-                return q.toJSON ? q.toJSON() : q;
-            });
-            json.query = queries.reduce(function (acc, query) { return (__assign(__assign({}, acc), query)); });
+        var json = {
+            size: this._size,
+            from: this._from,
+            sort: this._sort,
+            query: {},
+            aggs: {},
+        };
+        var query = this._query;
+        if ("toJSON" in this._query) {
+            query = this._query.toJSON();
         }
+        json.query = query;
         if (this._aggs.length) {
             json.aggs = this._aggs.reduce(function (acc, agg) { return (__assign(__assign({}, acc), agg)); });
         }
