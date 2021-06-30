@@ -1,6 +1,6 @@
 {
     "name": "@coedl/elastic-query-builder",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "description": "A library to help construct elastic search queries",
     "main": "index.js",
     "scripts": {
